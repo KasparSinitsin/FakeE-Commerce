@@ -1,37 +1,23 @@
-import getProducts from '../data/fakeStore';
-import { useState, useEffect } from "react";
+import { useOutletContext } from 'react-router';
 import Card from '../components/Card';
-import "../style.css";
+import { useState, useEffect } from 'react';
 
 function Home() {
+  const { addToCart } = useOutletContext();  // Get addToCart from Outlet context
   const [products, setProducts] = useState([]);
-  const [cart, setCart] = useState([]);
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const data = await getProducts();
-        setProducts(data);
-      } catch (error) {
-        console.error("Failed to fetch products", error);
-      }
-    };
-    fetchProducts();
+    fetch('https://fakestoreapi.com/products')
+      .then((res) => res.json())
+      .then((data) => setProducts(data));
   }, []);
 
-  const addToCart = (product) => {
-    setCart((prevCart) => [...prevCart, product]);
-    console.log("Cart updated:", cart);
-  };
-
   return (
-    <>
-      <div className="p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {products.map((product) => (
-          <Card key={product.id} product={product} addToCart={addToCart} />
-        ))}
-      </div>
-    </>
+    <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
+      {products.map((product) => (
+        <Card key={product.id} product={product} addToCart={addToCart} />
+      ))}
+    </div>
   );
 }
 
