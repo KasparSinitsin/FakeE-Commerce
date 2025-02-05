@@ -1,17 +1,38 @@
+import getProducts from '../data/fakeStore';
 import { useState, useEffect } from "react";
-import Navbar from "../components/Navbar";
+import Card from '../components/Card';
 import "../style.css";
 
 function Home() {
+  const [products, setProducts] = useState([]);
+  const [cart, setCart] = useState([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const data = await getProducts();
+        setProducts(data);
+      } catch (error) {
+        console.error("Failed to fetch products", error);
+      }
+    };
+    fetchProducts();
+  }, []);
+
+  const addToCart = (product) => {
+    setCart((prevCart) => [...prevCart, product]);
+    console.log("Cart updated:", cart);
+  };
+
   return (
     <>
-      <Navbar />
-      <div className="p-4">
-        <h1 className="text-2xl font-bold">Welcome to Home Page</h1>
-        <p className="mt-2 text-gray-600">This is your home page content.</p>
+      <div className="p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {products.map((product) => (
+          <Card key={product.id} product={product} addToCart={addToCart} />
+        ))}
       </div>
     </>
   );
 }
 
-export default Home
+export default Home;
