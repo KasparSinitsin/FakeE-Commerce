@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router';  
+import { useNavigate, Link } from 'react-router'; 
 import '../style.css';
 
 function Navbar({ cart = [] }) {  
@@ -13,9 +13,14 @@ function Navbar({ cart = [] }) {
   return (
     <div className="navbar bg-base-100">
       <div className="flex-1">
-        <a className="btn btn-ghost text-xl">FakeStore</a>
+        <Link to="/" className="btn btn-ghost text-xl">FakeStore</Link>
       </div>
       <div className="flex-none">
+
+        <div className="btn btn-ghost">
+        <Link to="/category">Categories</Link>
+        </div>
+
         <div className="dropdown dropdown-end">
           <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
             <div className="indicator">
@@ -54,6 +59,7 @@ function Navbar({ cart = [] }) {
             </div>
           </div>
         </div>
+
         <div className="dropdown dropdown-end">
           <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
             <div className="w-10 rounded-full">
